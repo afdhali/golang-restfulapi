@@ -2,7 +2,7 @@ package exception
 
 import (
 	"golang-restfulapi/helper"
-	"golang-restfulapi/model/web"
+	"golang-restfulapi/model/dto"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -27,7 +27,7 @@ func validationErrors(writer http.ResponseWriter, request *http.Request, err int
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusBadRequest)
 
-		webResponse := web.WebResponse{
+		webResponse := dto.WebResponse{
 			Code:   http.StatusBadRequest,
 			Status: "BAD REQUEST",
 			Data:   exception.Error(),
@@ -46,7 +46,7 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusNotFound)
 
-		webResponse := web.WebResponse{
+		webResponse := dto.WebResponse{
 			Code:   http.StatusNotFound,
 			Status: "NOT FOUND",
 			Data:   exception.Error,
@@ -63,7 +63,7 @@ func internalServerError(writer http.ResponseWriter, request *http.Request, err 
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusInternalServerError)
 
-	webResponse := web.WebResponse{
+	webResponse := dto.WebResponse{
 		Code:   http.StatusInternalServerError,
 		Status: "INTERNAL SERVER ERROR",
 		Data:   err,

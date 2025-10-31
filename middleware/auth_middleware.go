@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"golang-restfulapi/helper"
-	"golang-restfulapi/model/web"
+	"golang-restfulapi/model/dto"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (middleware *AuthMiddleware) ServeHTTP(writer http.ResponseWriter, request 
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusUnauthorized)
 
-		webResponse := web.WebResponse{
+		webResponse := dto.WebResponse{
 			Code:   http.StatusUnauthorized,
 			Status: "UNAUTHORIZED",
 		}

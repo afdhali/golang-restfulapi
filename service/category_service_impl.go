@@ -6,7 +6,7 @@ import (
 	"golang-restfulapi/exception"
 	"golang-restfulapi/helper"
 	"golang-restfulapi/model/domain"
-	"golang-restfulapi/model/web"
+	"golang-restfulapi/model/dto"
 	"golang-restfulapi/repository"
 
 	"github.com/go-playground/validator/v10"
@@ -18,7 +18,7 @@ type CategoryServiceImpl struct {
 	Validate           *validator.Validate
 }
 
-func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) CategoryService {
+func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) *CategoryServiceImpl {
 	return &CategoryServiceImpl{
 		CategoryRepository: categoryRepository,
 		DB:                 DB,
@@ -26,7 +26,7 @@ func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sq
 	}
 }
 
-func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
+func (service *CategoryServiceImpl) Create(ctx context.Context, request dto.CategoryCreateRequest) dto.CategoryResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
 
@@ -43,7 +43,7 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
+func (service *CategoryServiceImpl) Update(ctx context.Context, request dto.CategoryUpdateRequest) dto.CategoryResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
 
@@ -76,7 +76,7 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
 
-func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) web.CategoryResponse {
+func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) dto.CategoryResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
@@ -89,7 +89,7 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryResponse {
+func (service *CategoryServiceImpl) FindAll(ctx context.Context) []dto.CategoryResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
